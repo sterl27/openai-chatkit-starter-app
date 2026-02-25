@@ -1,0 +1,13 @@
+{
+    "chatgpt.openOnStartup": true,
+    "chatgpt.runCodexInWindowsSubsystemForLinux": true,
+    "editor.formatOnSave": true,
+    "jupyter.interactiveWindow.notebookRepl": true,
+    "jupyter.interactiveWindow.textEditor.executeSelection": true,
+    "jupyter.interactiveWindow.textEditor.magicCommandsAsComments": true,
+    "jupyter.interactiveWindow.textEditor.normalizeSelection": true,
+    "jupyter.logging.level": "off",
+    "jupyter.logKernelOutputSeparately": true,
+    "jupyter.themeMatplotlibPlots": true,
+    "jupyter.showVariableViewWhenDebugging": true
+}
