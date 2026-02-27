@@ -160,3 +160,4 @@ Dockerfile
 uploads/
 storage/
 sessions/
+.vercel
