@@ -54,6 +54,7 @@ chatkit-widgets/
 - `GET /api/widget/contact-form` - Contact form widget  
 - `GET /api/widget/cart` - Shopping cart widget
 - `GET /api/widget/ableton-live-12-suite` - Ableton Live 12 Suite product widget
+- `GET /api/widget/elevenlabs-agent?agentId=YOUR_AGENT_ID` - ElevenLabs conversational agent widget
 - `GET /api/widget/tradingview/guide` - TradingView + ChatKit integration guide widget
 - `GET /api/widget/tradingview/catalog` - TradingView widget directory catalog
 - `GET /api/widget/tradingview/embed?widget=advanced-chart&symbol=NASDAQ:AAPL` - Raw TradingView embed metadata/code for host-page rendering
@@ -97,6 +98,13 @@ const live12SuiteWidget = widgetTemplates.abletonLive12Suite;
 ```javascript
 // TradingView widget payload (ChatKit-compatible)
 const response = await fetch('/api/widget/tradingview?widget=advanced-chart&symbol=NASDAQ:AAPL');
+const { widget } = await response.json();
+```
+
+### ElevenLabs Agent Widget
+```javascript
+// ElevenLabs widget payload (ChatKit-compatible)
+const response = await fetch('/api/widget/elevenlabs-agent?agentId=YOUR_AGENT_ID');
 const { widget } = await response.json();
 ```
 
@@ -232,6 +240,9 @@ VALID_API_KEYS=key1,key2,key3
 
 # CORS
 CORS_ORIGIN=http://localhost:3000
+
+# ElevenLabs
+ELEVENLABS_AGENT_ID=YOUR_AGENT_ID
 ```
 
 ### Rate Limiting

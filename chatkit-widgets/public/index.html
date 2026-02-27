@@ -393,6 +393,7 @@
                                                 <button class="demo-tab" onclick="showDemo('lyrics')">Lyrics</button>
                                                 <button class="demo-tab" onclick="showDemo('audio')">Audio</button>
                                                 <button class="demo-tab" onclick="showDemo('youtube-themes')">YouTube Themes</button>
+                                            <button class="demo-tab" onclick="showDemo('elevenlabs-agent')">ElevenLabs Agent</button>
                                             <button class="demo-tab" onclick="showDemo('tradingview')">TradingView</button>
                                         </div>
                     <div class="demo-content">
@@ -450,6 +451,21 @@ const { widget } = await response.json();
 // Use as planning module in your app
 renderWidget(widget);</code></pre>
                         </div>
+                        <div id="demo-elevenlabs-agent" class="demo-tab-content" style="display: none;">
+                            <h3>ElevenLabs Agent Component</h3>
+                            <p>Serve an embed-ready ElevenLabs conversational agent widget from your backend with dynamic agent ID support.</p>
+                            <div class="widget-preview">
+                                <iframe src="/api/widget/elevenlabs-agent" width="100%" height="300" frameborder="0"></iframe>
+                            </div>
+                            <pre><code class="language-javascript">// Get ElevenLabs agent widget payload
+const response = await fetch('/api/widget/elevenlabs-agent?agentId=YOUR_AGENT_ID');
+const { widget } = await response.json();
+
+// Render in ChatKit
+chatkit.setOptions({
+  widgets: { initial: [widget] }
+});</code></pre>
+            </div>
                                                 <div id="demo-tradingview" class="demo-tab-content" style="display: none;">
                                                     <h3>TradingView Widget Integration</h3>
                                                     <p>Browse and render all supported TradingView widgets from your backend catalog.</p>

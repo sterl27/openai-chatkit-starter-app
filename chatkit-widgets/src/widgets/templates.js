@@ -775,6 +775,95 @@ const youtubeThemesWidget = {
   ]
 };
 
+function createElevenLabsAgentEmbedCode(agentId = 'YOUR_AGENT_ID') {
+  return [
+    '<!-- ElevenLabs Conversational AI Widget -->',
+    '<elevenlabs-convai agent-id="' + agentId + '"></elevenlabs-convai>',
+    '<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>'
+  ].join('\n');
+}
+
+function generateElevenLabsAgentWidget(agentId = 'YOUR_AGENT_ID') {
+  const embedCode = createElevenLabsAgentEmbedCode(agentId);
+
+  return {
+    type: 'card',
+    key: 'elevenlabs-agent-widget',
+    size: 'lg',
+    theme: 'light',
+    background: '#ffffff',
+    padding: 'lg',
+    radius: 'lg',
+    children: [
+      {
+        type: 'title',
+        value: 'ElevenLabs Agent Widget',
+        size: 'xl',
+        weight: 'bold'
+      },
+      {
+        type: 'text',
+        value: 'Embed an ElevenLabs voice agent into your ChatKit experience using your agent ID.',
+        size: 'sm',
+        color: '#64748b'
+      },
+      {
+        type: 'divider',
+        spacing: 'md'
+      },
+      {
+        type: 'row',
+        gap: 'sm',
+        children: [
+          {
+            type: 'badge',
+            label: 'Voice Agent',
+            color: 'discovery',
+            variant: 'soft',
+            pill: true
+          },
+          {
+            type: 'badge',
+            label: 'ElevenLabs',
+            color: 'info',
+            variant: 'soft',
+            pill: true
+          }
+        ]
+      },
+      {
+        type: 'text',
+        value: 'Embed snippet:',
+        size: 'sm',
+        weight: 'medium'
+      },
+      {
+        type: 'markdown',
+        value: `\`\`\`html\n${embedCode}\n\`\`\``
+      },
+      {
+        type: 'row',
+        gap: 'sm',
+        children: [
+          {
+            type: 'button',
+            label: 'Open ElevenLabs Agents',
+            variant: 'outline',
+            size: 'sm',
+            onClickAction: {
+              type: 'navigate',
+              name: 'open_elevenlabs_agents',
+              parameters: {
+                url: 'https://elevenlabs.io/app/agents'
+              }
+            }
+          }
+        ]
+      }
+    ]
+  };
+}
+
 const tradingViewWidgetDirectory = [
   // Charts
   {
@@ -1315,5 +1404,7 @@ module.exports = {
   tradingViewWidgetCatalog,
   generateTradingViewEmbedWidget,
   getTradingViewWidgetByKey,
-  buildTradingViewEmbedCode
+  buildTradingViewEmbedCode,
+  createElevenLabsAgentEmbedCode,
+  generateElevenLabsAgentWidget
 };

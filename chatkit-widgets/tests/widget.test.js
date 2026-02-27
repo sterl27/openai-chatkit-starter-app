@@ -49,6 +49,13 @@ describe('Widget Templates', () => {
     expect(result.success).toBe(true);
     expect(result.failed).toBe(0);
   });
+
+  test('ElevenLabs agent widget should be valid', () => {
+    const widget = widgetTemplates.generateElevenLabsAgentWidget('agent_demo_123');
+    const result = testWidget(widget);
+    expect(result.success).toBe(true);
+    expect(result.failed).toBe(0);
+  });
 });
 
 describe('Widget Builder', () => {

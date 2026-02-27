@@ -269,6 +269,31 @@ app.get('/api/widget/youtube-themes', (req, res) => {
   }
 });
 
+// Get ElevenLabs agent widget
+app.get('/api/widget/elevenlabs-agent', (req, res) => {
+  try {
+    const { agentId } = req.query;
+    const resolvedAgentId = agentId || process.env.ELEVENLABS_AGENT_ID || 'YOUR_AGENT_ID';
+    const widget = widgetTemplates.generateElevenLabsAgentWidget(resolvedAgentId);
+
+    res.json({
+      success: true,
+      widget,
+      meta: {
+        provider: 'ElevenLabs',
+        agentId: resolvedAgentId,
+        timestamp: new Date().toISOString()
+      }
+    });
+  } catch (error) {
+    console.error('Error generating ElevenLabs agent widget:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to generate ElevenLabs agent widget'
+    });
+  }
+});
+
 // Get TradingView integration guide widget
 app.get('/api/widget/tradingview/guide', (req, res) => {
   try {
@@ -666,6 +691,7 @@ app.get('/', (req, res) => {
         'GET /api/widget/lyrics': 'Get lyrics widget',
         'GET /api/widget/audio': 'Get audio intelligence widget',
         'GET /api/widget/youtube-themes': 'Get YouTube themes widget',
+        'GET /api/widget/elevenlabs-agent?agentId=<id>': 'Get ElevenLabs Conversational AI widget',
         'GET /api/widget/tradingview/guide': 'Get TradingView + ChatKit integration guide widget',
         'GET /api/widget/tradingview/catalog': 'Get TradingView widget directory catalog',
         'GET /api/widget/tradingview/embed?widget=<key>&symbol=<symbol>': 'Get TradingView raw embed metadata/code',

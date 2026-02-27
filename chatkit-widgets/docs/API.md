@@ -133,6 +133,31 @@ GET /widget/analysis
 }
 ```
 
+#### Get ElevenLabs Agent Widget
+```http
+GET /widget/elevenlabs-agent?agentId=YOUR_AGENT_ID
+```
+
+**Query Parameters:**
+- `agentId` (optional) - ElevenLabs agent ID. Falls back to `ELEVENLABS_AGENT_ID` env var.
+
+**Response:**
+```json
+{
+  "success": true,
+  "widget": {
+    "type": "card",
+    "key": "elevenlabs-agent-widget",
+    "children": [...]
+  },
+  "meta": {
+    "provider": "ElevenLabs",
+    "agentId": "YOUR_AGENT_ID",
+    "timestamp": "2026-02-26T12:00:00Z"
+  }
+}
+```
+
 #### Get TradingView Integration Guide Widget
 ```http
 GET /widget/tradingview/guide
