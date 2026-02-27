@@ -37,6 +37,18 @@ describe('Widget Templates', () => {
     expect(result.success).toBe(true);
     expect(result.failed).toBe(0);
   });
+
+  test('TradingView integration guide widget should be valid', () => {
+    const result = testWidget(widgetTemplates.tradingViewIntegrationGuide);
+    expect(result.success).toBe(true);
+    expect(result.failed).toBe(0);
+  });
+
+  test('TradingView catalog widget should be valid', () => {
+    const result = testWidget(widgetTemplates.tradingViewWidgetCatalog);
+    expect(result.success).toBe(true);
+    expect(result.failed).toBe(0);
+  });
 });
 
 describe('Widget Builder', () => {
@@ -94,6 +106,16 @@ describe('Widget Builder', () => {
     
     expect(result.success).toBe(true);
     expect(widget.type).toBe('card');
+  });
+
+  test('Should generate TradingView embed widget', () => {
+    const widget = widgetTemplates.generateTradingViewEmbedWidget('advanced-chart', {
+      symbol: 'NASDAQ:MSFT'
+    });
+    const result = testWidget(widget);
+
+    expect(result.success).toBe(true);
+    expect(widget.key).toContain('tradingview');
   });
 });
 

@@ -1,16 +1,16 @@
-# ChatKit Widget Development Framework
+# Sterling Atkinson 2026 Widget Platform
 
-A comprehensive full-stack framework for building, testing, and deploying ChatKit widgets with real-time capabilities, authentication, and dynamic content generation.
+A production-ready full-stack platform for building, testing, and deploying interactive Sterling Atkinson 2026 widgets with real-time updates, secure APIs, and dynamic content delivery.
 
-## 🚀 Features
+## 🚀 Core Capabilities
 
-- **Dynamic Widget Generation** - Create widgets programmatically from data sources
-- **Real-time Updates** - Socket.IO integration for live widget state synchronization
-- **Authentication & Security** - JWT-based auth with role-based access control
-- **Comprehensive Validation** - Widget structure, accessibility, and performance validation
-- **Testing Suite** - Built-in testing utilities for widget functionality and interactions
-- **Pre-built Templates** - Ready-to-use widget templates for common use cases
-- **Performance Monitoring** - Widget profiling and optimization recommendations
+- **Dynamic Widget Generation** - Generate widgets programmatically from structured data sources
+- **Real-time Updates** - Socket.IO integration for live state synchronization and event delivery
+- **Authentication & Security** - JWT-based authentication with role-aware access controls
+- **Comprehensive Validation** - Structural, accessibility, and performance validation for widgets
+- **Testing Suite** - Built-in tooling for behavior, interaction, and reliability testing
+- **Pre-built Templates** - Reusable templates for common product and workflow scenarios
+- **Performance Monitoring** - Profiling insights and optimization recommendations
 
 ## 📁 Project Structure
 
@@ -54,6 +54,10 @@ chatkit-widgets/
 - `GET /api/widget/contact-form` - Contact form widget  
 - `GET /api/widget/cart` - Shopping cart widget
 - `GET /api/widget/ableton-live-12-suite` - Ableton Live 12 Suite product widget
+- `GET /api/widget/tradingview/guide` - TradingView + ChatKit integration guide widget
+- `GET /api/widget/tradingview/catalog` - TradingView widget directory catalog
+- `GET /api/widget/tradingview/embed?widget=advanced-chart&symbol=NASDAQ:AAPL` - Raw TradingView embed metadata/code for host-page rendering
+- `GET /api/widget/tradingview?widget=advanced-chart&symbol=NASDAQ:AAPL` - TradingView embed snippet widget
 
 ### Action Handlers
 - `POST /api/widget-action` - Process widget interactions (clicks, forms, etc.)
@@ -87,6 +91,13 @@ const cartWidget = widgetBuilder.generateCartWidget(cartItems, products);
 ### Ableton Live 12 Suite
 ```javascript
 const live12SuiteWidget = widgetTemplates.abletonLive12Suite;
+```
+
+### TradingView Embed Widget
+```javascript
+// TradingView widget payload (ChatKit-compatible)
+const response = await fetch('/api/widget/tradingview?widget=advanced-chart&symbol=NASDAQ:AAPL');
+const { widget } = await response.json();
 ```
 
 ## 🔐 Authentication
@@ -317,7 +328,7 @@ function authorizeWidgetAccess(widgetType) {
 
 ## 📖 Additional Resources
 
-- [ChatKit Widget Documentation](https://docs.chatkit.com/widgets)
+- [Sterling Starter Repository](https://github.com/sterl27/openai-chatkit-starter-app)
 - [Socket.IO Documentation](https://socket.io/docs/)
 - [Express.js Guide](https://expressjs.com/guide/)
 - [JWT Best Practices](https://tools.ietf.org/html/rfc7519)
@@ -335,19 +346,4 @@ MIT License - see LICENSE file for details
 
 ---
 
-**Happy widget building! 🎉**
-
-# Extract unique ID from the Sora URL for the filename
-file_id = sora_url.split('/')[-1]
-filename = os.path.join(folder, f"{file_id}.mp4")
-
-try:
-    response = requests.get(src_url, stream=True)
-    response.raise_for_status()
-    
-    with open(filename, 'wb') as f:
-        for chunk in response.iter_content(chunk_size=8192):
-            f.write(chunk)
-    print(f"Successfully downloaded: {filename}")
-except Exception as e:
-    print(f"Failed to download {file_id}: {e}")
+**Build confidently. Ship faster.**

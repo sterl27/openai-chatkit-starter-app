@@ -185,6 +185,245 @@ app.get('/api/widget/ableton-live-12-suite', (req, res) => {
   }
 });
 
+// Get analysis widget
+app.get('/api/widget/analysis', (req, res) => {
+  try {
+    const widget = widgetTemplates.analysisWidget;
+    res.json({
+      success: true,
+      widget,
+      meta: {
+        product: 'Analysis',
+        timestamp: new Date().toISOString()
+      }
+    });
+  } catch (error) {
+    console.error('Error generating analysis widget:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to generate analysis widget'
+    });
+  }
+});
+
+// Get lyrics widget
+app.get('/api/widget/lyrics', (req, res) => {
+  try {
+    const widget = widgetTemplates.lyricsWidget;
+    res.json({
+      success: true,
+      widget,
+      meta: {
+        product: 'Lyrics',
+        timestamp: new Date().toISOString()
+      }
+    });
+  } catch (error) {
+    console.error('Error generating lyrics widget:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to generate lyrics widget'
+    });
+  }
+});
+
+// Get audio widget
+app.get('/api/widget/audio', (req, res) => {
+  try {
+    const widget = widgetTemplates.audioWidget;
+    res.json({
+      success: true,
+      widget,
+      meta: {
+        product: 'Audio',
+        timestamp: new Date().toISOString()
+      }
+    });
+  } catch (error) {
+    console.error('Error generating audio widget:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to generate audio widget'
+    });
+  }
+});
+
+// Get YouTube themes widget
+app.get('/api/widget/youtube-themes', (req, res) => {
+  try {
+    const widget = widgetTemplates.youtubeThemesWidget;
+    res.json({
+      success: true,
+      widget,
+      meta: {
+        product: 'YouTube Themes',
+        timestamp: new Date().toISOString()
+      }
+    });
+  } catch (error) {
+    console.error('Error generating YouTube themes widget:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to generate YouTube themes widget'
+    });
+  }
+});
+
+// Get TradingView integration guide widget
+app.get('/api/widget/tradingview/guide', (req, res) => {
+  try {
+    const widget = widgetTemplates.tradingViewIntegrationGuide;
+    res.json({
+      success: true,
+      widget,
+      meta: {
+        provider: 'TradingView',
+        timestamp: new Date().toISOString()
+      }
+    });
+  } catch (error) {
+    console.error('Error generating TradingView guide widget:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to generate TradingView guide widget'
+    });
+  }
+});
+
+// Get TradingView widget catalog
+app.get('/api/widget/tradingview/catalog', (req, res) => {
+  try {
+    const widget = widgetTemplates.tradingViewWidgetCatalog;
+    res.json({
+      success: true,
+      widget,
+      data: widgetTemplates.tradingViewWidgetDirectory,
+      meta: {
+        provider: 'TradingView',
+        total: widgetTemplates.tradingViewWidgetDirectory.length,
+        timestamp: new Date().toISOString()
+      }
+    });
+  } catch (error) {
+    console.error('Error generating TradingView catalog widget:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to generate TradingView catalog widget'
+    });
+  }
+});
+
+// Get TradingView raw embed metadata/code for host-page rendering
+app.get('/api/widget/tradingview/embed', (req, res) => {
+  try {
+    const { widget: widgetKey = 'advanced-chart', symbol, size = 'medium' } = req.query;
+    const selectedWidget = widgetTemplates.getTradingViewWidgetByKey(widgetKey)
+      || widgetTemplates.getTradingViewWidgetByKey('advanced-chart');
+
+    const config = {
+      ...(selectedWidget.defaultConfig || {})
+    };
+
+    const sizePresets = {
+      small: { width: 360, height: 280 },
+      medium: { width: 550, height: 400 },
+      large: { width: 980, height: 610 }
+    };
+    const resolvedSize = sizePresets[size] ? size : 'medium';
+    const sizeConfig = sizePresets[resolvedSize];
+
+    if (symbol && selectedWidget.format === 'iframe') {
+      config.symbol = symbol;
+    }
+
+    if (selectedWidget.format === 'iframe' && sizeConfig) {
+      if (config.autosize) {
+        config.autosize = false;
+      }
+      config.width = sizeConfig.width;
+      config.height = sizeConfig.height;
+    }
+
+    const attributes = {
+      ...(selectedWidget.defaultAttributes || {})
+    };
+
+    if (symbol && selectedWidget.format === 'web-component') {
+      attributes.symbol = symbol;
+    }
+
+    const embedCode = widgetTemplates.buildTradingViewEmbedCode(selectedWidget, {
+      symbol,
+      config,
+      attributes
+    });
+
+    res.json({
+      success: true,
+      data: {
+        key: selectedWidget.key,
+        name: selectedWidget.name,
+        category: selectedWidget.category,
+        format: selectedWidget.format,
+        docsUrl: selectedWidget.docsUrl,
+        scriptUrl: selectedWidget.scriptUrl,
+        elementTag: selectedWidget.elementTag || null,
+        attributes: selectedWidget.format === 'web-component' ? attributes : null,
+        config: selectedWidget.format === 'iframe' ? config : null,
+        embedCode
+      },
+      meta: {
+        provider: 'TradingView',
+        size: resolvedSize,
+        symbol: symbol || null,
+        timestamp: new Date().toISOString()
+      }
+    });
+  } catch (error) {
+    console.error('Error generating TradingView embed metadata:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to generate TradingView embed metadata',
+      details: error.message
+    });
+  }
+});
+
+// Get a specific TradingView embed widget
+app.get('/api/widget/tradingview', (req, res) => {
+  try {
+    const { widget: widgetKey = 'advanced-chart', symbol } = req.query;
+
+    const selectedWidget = widgetTemplates.tradingViewWidgetDirectory.find(
+      entry => entry.key === widgetKey
+    );
+
+    const widget = widgetTemplates.generateTradingViewEmbedWidget(widgetKey, {
+      symbol
+    });
+
+    res.json({
+      success: true,
+      widget,
+      meta: {
+        provider: 'TradingView',
+        widget: selectedWidget ? selectedWidget.key : 'advanced-chart',
+        category: selectedWidget ? selectedWidget.category : 'Charts',
+        format: selectedWidget ? selectedWidget.format : 'iframe',
+        symbol: symbol || 'NASDAQ:AAPL',
+        timestamp: new Date().toISOString()
+      }
+    });
+  } catch (error) {
+    console.error('Error generating TradingView widget:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to generate TradingView widget',
+      details: error.message
+    });
+  }
+});
+
 // === WIDGET ACTION HANDLER ===
 app.post('/api/widget-action', async (req, res) => {
   try {
@@ -415,14 +654,22 @@ app.get('/api/health', (req, res) => {
 // Root endpoint with API documentation
 app.get('/', (req, res) => {
   res.json({
-    message: 'ChatKit Widget Server',
+    message: 'Sterling Atkinson 2026 Widget Server',
     version: '1.0.0',
     endpoints: {
       widgets: {
         'GET /api/widget/products': 'Get dynamic product list widget',
         'GET /api/widget/contact-form': 'Get contact form widget',
         'GET /api/widget/cart': 'Get shopping cart widget',
-        'GET /api/widget/ableton-live-12-suite': 'Get Ableton Live 12 Suite widget'
+        'GET /api/widget/ableton-live-12-suite': 'Get Ableton Live 12 Suite widget',
+        'GET /api/widget/analysis': 'Get analysis widget',
+        'GET /api/widget/lyrics': 'Get lyrics widget',
+        'GET /api/widget/audio': 'Get audio intelligence widget',
+        'GET /api/widget/youtube-themes': 'Get YouTube themes widget',
+        'GET /api/widget/tradingview/guide': 'Get TradingView + ChatKit integration guide widget',
+        'GET /api/widget/tradingview/catalog': 'Get TradingView widget directory catalog',
+        'GET /api/widget/tradingview/embed?widget=<key>&symbol=<symbol>': 'Get TradingView raw embed metadata/code',
+        'GET /api/widget/tradingview?widget=<key>&symbol=<symbol>': 'Get TradingView embed snippet widget'
       },
       actions: {
         'POST /api/widget-action': 'Handle widget actions (clicks, form submissions, etc.)'
@@ -462,7 +709,7 @@ app.use((req, res) => {
 
 // Start server
 server.listen(PORT, () => {
-  console.log(`🚀 ChatKit Widget Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Sterling Atkinson 2026 Widget Server running on http://localhost:${PORT}`);
   console.log(`📊 Socket.IO enabled for real-time updates`);
   console.log(`📚 API documentation available at http://localhost:${PORT}`);
 });

@@ -1,7 +1,7 @@
 {
-  "name": "chatkit-widgets",
+  "name": "sterling-atkinson-2026-widgets",
   "version": "1.0.0",
-  "description": "Comprehensive ChatKit widget development framework with real-time capabilities, authentication, and dynamic content generation",
+  "description": "Comprehensive Sterling Atkinson 2026 widget development framework with real-time capabilities, authentication, and dynamic content generation",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
@@ -18,7 +18,7 @@
     "docker:run": "docker run -p 3000:3000 chatkit-widgets"
   },
   "keywords": [
-    "chatkit",
+    "sterling",
     "widgets",
     "ui-components",
     "real-time",
@@ -27,7 +27,7 @@
     "jwt",
     "authentication"
   ],
-  "author": "ChatKit Widget Framework Team",
+  "author": "Sterling Atkinson 2026",
   "license": "MIT",
   "dependencies": {
     "express": "^4.18.2",
@@ -60,12 +60,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-org/chatkit-widgets.git"
+    "url": "https://github.com/sterl27/openai-chatkit-starter-app.git"
   },
   "bugs": {
-    "url": "https://github.com/your-org/chatkit-widgets/issues"
+    "url": "https://github.com/sterl27/openai-chatkit-starter-app/issues"
   },
-  "homepage": "https://github.com/your-org/chatkit-widgets#readme",
+  "homepage": "https://github.com/sterl27/openai-chatkit-starter-app#readme",
   "jest": {
     "testEnvironment": "node",
     "coverageDirectory": "coverage",

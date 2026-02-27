@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sterling Atkinson 2026 — Modern Conversational Interfaces</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 120px 0 80px;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #4f46e5;
+            color: white;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+        }
+
+        .btn-primary:hover {
+            background: #3730a3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Features Section */
+        .features {
+            background: white;
+            padding: 80px 0;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #1a1a1a;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: #f8fafc;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+        }
+
+        /* Demo Section */
+        .demo {
+            background: #f8fafc;
+            padding: 80px 0;
+        }
+
+        .demo h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #1a1a1a;
+        }
+
+        .demo-container {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .demo-tabs {
+            display: flex;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 1rem;
+        }
+
+        .demo-tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            color: #64748b;
+            transition: all 0.3s;
+        }
+
+        .demo-tab.active {
+            color: #4f46e5;
+            border-bottom: 2px solid #4f46e5;
+        }
+
+        .demo-content {
+            min-height: 400px;
+        }
+
+        .widget-preview {
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        /* Code blocks */
+        pre {
+            background: #1e293b !important;
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        code {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+        }
+
+        /* Integration Section */
+        .integration {
+            background: white;
+            padding: 80px 0;
+        }
+
+        .integration h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #1a1a1a;
+        }
+
+        .integration-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .step {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: #4f46e5;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">🚀 Sterling Atkinson 2026</div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#demo">Demo</a></li>
+                <li><a href="#integration">Integration</a></li>
+                <li><a href="/docs/API.md" target="_blank">Docs</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Build Modern Conversational Interfaces</h1>
+                <p>Deliver production-grade interactive experiences with Sterling Atkinson 2026—real-time state updates, secure integration patterns, and dynamic UI composition built in.</p>
+                <div class="cta-buttons">
+                    <a href="/api/widget/products" class="btn btn-primary" target="_blank">🎯 View Live Demo</a>
+                    <a href="#integration" class="btn btn-secondary">📖 Get Started</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="features">
+            <div class="container">
+                <h2>Platform Capabilities for AI-Ready Experiences</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>Dynamic Widget Generation</h3>
+                        <p>Create widgets programmatically from data sources with full JSON schema validation and real-time content updates.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔄</div>
+                        <h3>Real-time Updates</h3>
+                        <p>Socket.IO integration for live widget state synchronization, inventory updates, and user interaction tracking.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>Enterprise Security</h3>
+                        <p>JWT authentication, role-based access control, rate limiting, and comprehensive input validation.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🧪</div>
+                        <h3>Testing Suite</h3>
+                        <p>Built-in testing utilities for widget functionality, accessibility compliance, and performance profiling.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📦</div>
+                        <h3>Pre-built Templates</h3>
+                        <p>Ready-to-use widget templates for e-commerce, forms, dashboards, and interactive experiences.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>Performance Monitoring</h3>
+                        <p>Widget profiling, optimization recommendations, and real-time analytics for user engagement.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="demo" class="demo">
+            <div class="container">
+                <h2>See It In Action</h2>
+                <div class="demo-container">
+                                        <div class="demo-tabs">
+                                                <button class="demo-tab active" onclick="showDemo('analysis')">Analysis</button>
+                                                <button class="demo-tab" onclick="showDemo('lyrics')">Lyrics</button>
+                                                <button class="demo-tab" onclick="showDemo('audio')">Audio</button>
+                                                <button class="demo-tab" onclick="showDemo('youtube-themes')">YouTube Themes</button>
+                                            <button class="demo-tab" onclick="showDemo('tradingview')">TradingView</button>
+                                        </div>
+                    <div class="demo-content">
+                                                <div id="demo-analysis" class="demo-tab-content">
+                                                        <h3>Analysis Component</h3>
+                                                        <p>Present structured insights, confidence scores, and AI-generated highlights in a clean, composable layout.</p>
+                            <div class="widget-preview">
+                                                                <iframe src="/api/widget/analysis" width="100%" height="300" frameborder="0"></iframe>
+                            </div>
+                                                        <pre><code class="language-javascript">// Get analysis widget
+const response = await fetch('/api/widget/analysis');
+const { widget } = await response.json();
+
+// Render with your component runtime
+sterling.setOptions({
+    widgets: { initial: [widget] }
+});</code></pre>
+                        </div>
+                                                <div id="demo-lyrics" class="demo-tab-content" style="display: none;">
+                                                        <h3>Lyrics Component</h3>
+                                                        <p>Compose, annotate, and iterate lyrical ideas with section tags and AI-assisted drafting workflows.</p>
+                            <div class="widget-preview">
+                                                                <iframe src="/api/widget/lyrics" width="100%" height="300" frameborder="0"></iframe>
+                            </div>
+                                                        <pre><code class="language-javascript">// Get lyrics widget
+const response = await fetch('/api/widget/lyrics');
+const { widget } = await response.json();
+
+// Add to your conversation surface
+renderWidget(widget);</code></pre>
+                        </div>
+                                                <div id="demo-audio" class="demo-tab-content" style="display: none;">
+                                                        <h3>Audio Component</h3>
+                                                        <p>Visualize transcription confidence, loudness metrics, and speech quality in real time.</p>
+                            <div class="widget-preview">
+                                                                <iframe src="/api/widget/audio" width="100%" height="300" frameborder="0"></iframe>
+                            </div>
+                                                        <pre><code class="language-javascript">// Get audio widget
+const response = await fetch('/api/widget/audio');
+const { widget } = await response.json();
+
+// Stream updates from your audio pipeline
+updateWidget(widget);</code></pre>
+                                                </div>
+                                                <div id="demo-youtube-themes" class="demo-tab-content" style="display: none;">
+                                                        <h3>YouTube Themes Component</h3>
+                                                        <p>Plan channel themes, series concepts, and publishing angles with AI-guided curation.</p>
+                                                        <div class="widget-preview">
+                                                                <iframe src="/api/widget/youtube-themes" width="100%" height="300" frameborder="0"></iframe>
+                                                        </div>
+                                                        <pre><code class="language-javascript">// Get YouTube themes widget
+const response = await fetch('/api/widget/youtube-themes');
+const { widget } = await response.json();
+
+// Use as planning module in your app
+renderWidget(widget);</code></pre>
+                        </div>
+                                                <div id="demo-tradingview" class="demo-tab-content" style="display: none;">
+                                                    <h3>TradingView Widget Integration</h3>
+                                                    <p>Browse and render all supported TradingView widgets from your backend catalog.</p>
+                                                    <div id="tradingview-category-filters" style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 12px;"></div>
+                                                    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:end;margin:12px 0;">
+                                                        <div style="min-width:260px;flex:1;">
+                                                            <label for="tradingview-widget-select" style="display:block;font-size:12px;color:#475569;margin-bottom:4px;">Widget</label>
+                                                            <select id="tradingview-widget-select" style="width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;"></select>
+                                                        </div>
+                                                        <div style="min-width:180px;">
+                                                            <label for="tradingview-size-select" style="display:block;font-size:12px;color:#475569;margin-bottom:4px;">Size preset</label>
+                                                            <select id="tradingview-size-select" style="width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;">
+                                                                <option value="small">Small</option>
+                                                                <option value="medium" selected>Medium</option>
+                                                                <option value="large">Large</option>
+                                                            </select>
+                                                        </div>
+                                                        <div style="min-width:220px;flex:1;">
+                                                            <label for="tradingview-symbol-input" style="display:block;font-size:12px;color:#475569;margin-bottom:4px;">Symbol override (optional)</label>
+                                                            <input id="tradingview-symbol-input" value="NASDAQ:AAPL" style="width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;" />
+                                                        </div>
+                                                        <button id="tradingview-render-btn" class="btn btn-primary" style="padding:10px 16px;">Render Widget</button>
+                                                        <button id="tradingview-copy-btn" class="btn btn-secondary" style="padding:10px 16px;">Copy Embed Code</button>
+                                                        <button id="tradingview-share-btn" class="btn btn-secondary" style="padding:10px 16px;">Copy Share Link</button>
+                                                    </div>
+                                                    <div style="margin:8px 0 12px;color:#475569;font-size:14px;">
+                                                        Format: <strong id="tradingview-widget-format">-</strong> ·
+                                                        Category: <strong id="tradingview-widget-category">-</strong> ·
+                                                        <a id="tradingview-docs-link" href="https://www.tradingview.com/widget-docs/widgets/charts/advanced-chart/" target="_blank" rel="noopener noreferrer">Open widget docs</a>
+                                                    </div>
+                                                    <div id="tradingview-preview-shell" class="widget-preview" style="height: 420px;overflow:auto;">
+                                                        <div id="tradingview-live-preview" style="height:100%;width:100%;"></div>
+                                                    </div>
+                                                    <pre><code id="tradingview-code" class="language-javascript">// Choose a widget, then click "Render Widget"
+// Embed code will appear here.
+</code></pre>
+                                    </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="integration" class="integration">
+            <div class="container">
+                <h2>Fast, Structured Integration</h2>
+                <div class="integration-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h3>Initialize & Deploy</h3>
+                        <p>Clone the repository, install dependencies, and deploy to your preferred platform.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h3>Connect Data</h3>
+                        <p>Connect your database, set up product catalogs, and configure authentication.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h3>Integrate Components</h3>
+                        <p>Add widget endpoints to your Sterling configuration and handle user interactions.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <h3>Launch with Confidence</h3>
+                        <p>Deploy to production with real-time updates, analytics, and full widget functionality.</p>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 3rem;">
+                    <a href="/docs/API.md" class="btn btn-primary" target="_blank">📚 View Full Documentation</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Sterling Atkinson. Built for modern conversational products.</p>
+            <p>Reliable components. Secure workflows. Real-time outcomes.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script>
+        let tradingViewCatalog = [];
+        let currentTradingViewFilter = 'all';
+
+        function showDemo(type) {
+            // Hide all demo content
+            document.querySelectorAll('.demo-tab-content').forEach(content => {
+                content.style.display = 'none';
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.demo-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected demo content
+            document.getElementById(`demo-${type}`).style.display = 'block';
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        async function initTradingViewDemo() {
+            try {
+                const response = await fetch('/api/widget/tradingview/catalog');
+                const payload = await response.json();
+
+                if (!payload.success || !Array.isArray(payload.data)) {
+                    throw new Error('Unable to load TradingView catalog');
+                }
+
+                tradingViewCatalog = payload.data;
+                renderTradingViewCategoryFilters();
+                populateTradingViewWidgetSelect();
+                const select = document.getElementById('tradingview-widget-select');
+
+                document.getElementById('tradingview-render-btn').addEventListener('click', () => {
+                    renderSelectedTradingViewWidget();
+                });
+
+                document.getElementById('tradingview-copy-btn').addEventListener('click', async () => {
+                    const code = document.getElementById('tradingview-code')?.textContent || '';
+                    if (!code.trim()) return;
+
+                    try {
+                        await navigator.clipboard.writeText(code);
+                        const copyBtn = document.getElementById('tradingview-copy-btn');
+                        const original = copyBtn.textContent;
+                        copyBtn.textContent = 'Copied!';
+                        setTimeout(() => {
+                            copyBtn.textContent = original;
+                        }, 1200);
+                    } catch (err) {
+                        console.error('Clipboard copy failed:', err);
+                    }
+                });
+
+                document.getElementById('tradingview-share-btn').addEventListener('click', async () => {
+                    const shareUrl = buildTradingViewShareUrl();
+                    try {
+                        await navigator.clipboard.writeText(shareUrl);
+                        const btn = document.getElementById('tradingview-share-btn');
+                        const original = btn.textContent;
+                        btn.textContent = 'Link Copied!';
+                        setTimeout(() => {
+                            btn.textContent = original;
+                        }, 1200);
+                    } catch (err) {
+                        console.error('Share link copy failed:', err);
+                    }
+                });
+
+                select.addEventListener('change', () => {
+                    renderSelectedTradingViewWidget();
+                });
+
+                document.getElementById('tradingview-size-select').addEventListener('change', () => {
+                    applyTradingViewSizePreset();
+                    renderSelectedTradingViewWidget();
+                });
+
+                document.getElementById('tradingview-symbol-input').addEventListener('change', () => {
+                    renderSelectedTradingViewWidget();
+                });
+
+                restoreTradingViewStateFromUrl();
+
+                applyTradingViewSizePreset();
+
+                await renderSelectedTradingViewWidget();
+            } catch (error) {
+                console.error('TradingView demo init failed:', error);
+                const preview = document.getElementById('tradingview-live-preview');
+                if (preview) {
+                    preview.innerHTML = '<p style="color:#b91c1c;">Unable to load TradingView catalog.</p>';
+                }
+            }
+        }
+
+        function renderTradingViewCategoryFilters() {
+            const host = document.getElementById('tradingview-category-filters');
+            const categories = Array.from(new Set(tradingViewCatalog.map(item => item.category || 'Other')));
+            const all = ['all', ...categories];
+
+            host.innerHTML = '';
+            all.forEach(category => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                const isActive = currentTradingViewFilter === category;
+                button.textContent = category === 'all' ? 'All' : category;
+                button.style.border = '1px solid #cbd5e1';
+                button.style.borderRadius = '999px';
+                button.style.padding = '6px 12px';
+                button.style.cursor = 'pointer';
+                button.style.fontSize = '12px';
+                button.style.background = isActive ? '#4f46e5' : '#ffffff';
+                button.style.color = isActive ? '#ffffff' : '#334155';
+
+                button.addEventListener('click', () => {
+                    currentTradingViewFilter = category;
+                    renderTradingViewCategoryFilters();
+                    populateTradingViewWidgetSelect();
+                    renderSelectedTradingViewWidget();
+                });
+
+                host.appendChild(button);
+            });
+        }
+
+        function populateTradingViewWidgetSelect() {
+            const select = document.getElementById('tradingview-widget-select');
+            const previous = select.value;
+            const filtered = currentTradingViewFilter === 'all'
+                ? tradingViewCatalog
+                : tradingViewCatalog.filter(item => (item.category || 'Other') === currentTradingViewFilter);
+
+            const grouped = filtered.reduce((acc, item) => {
+                const key = item.category || 'Other';
+                acc[key] = acc[key] || [];
+                acc[key].push(item);
+                return acc;
+            }, {});
+
+            select.innerHTML = '';
+            Object.keys(grouped).forEach(category => {
+                const optgroup = document.createElement('optgroup');
+                optgroup.label = category;
+
+                grouped[category].forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.key;
+                    option.textContent = `${item.name} (${item.format})`;
+                    optgroup.appendChild(option);
+                });
+
+                select.appendChild(optgroup);
+            });
+
+            if (previous && filtered.some(item => item.key === previous)) {
+                select.value = previous;
+            }
+        }
+
+        function applyTradingViewSizePreset() {
+            const size = document.getElementById('tradingview-size-select')?.value || 'medium';
+            const shell = document.getElementById('tradingview-preview-shell');
+            const presets = {
+                small: 320,
+                medium: 420,
+                large: 560
+            };
+
+            shell.style.height = `${presets[size] || presets.medium}px`;
+        }
+
+        function restoreTradingViewStateFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            const widget = params.get('tv_widget');
+            const size = params.get('tv_size');
+            const symbol = params.get('tv_symbol');
+            const category = params.get('tv_category');
+
+            if (category) {
+                currentTradingViewFilter = category;
+                renderTradingViewCategoryFilters();
+                populateTradingViewWidgetSelect();
+            }
+
+            if (size && ['small', 'medium', 'large'].includes(size)) {
+                document.getElementById('tradingview-size-select').value = size;
+            }
+
+            if (symbol) {
+                document.getElementById('tradingview-symbol-input').value = symbol;
+            }
+
+            if (widget) {
+                const select = document.getElementById('tradingview-widget-select');
+                const hasWidget = Array.from(select.options).some(option => option.value === widget);
+                if (hasWidget) {
+                    select.value = widget;
+                }
+            }
+        }
+
+        function buildTradingViewShareUrl() {
+            const select = document.getElementById('tradingview-widget-select');
+            const size = document.getElementById('tradingview-size-select')?.value || 'medium';
+            const symbol = document.getElementById('tradingview-symbol-input')?.value?.trim() || '';
+            const params = new URLSearchParams(window.location.search);
+
+            params.set('tv_widget', select?.value || 'advanced-chart');
+            params.set('tv_size', size);
+            params.set('tv_category', currentTradingViewFilter);
+
+            if (symbol) {
+                params.set('tv_symbol', symbol);
+            } else {
+                params.delete('tv_symbol');
+            }
+
+            return `${window.location.origin}${window.location.pathname}?${params.toString()}${window.location.hash}`;
+        }
+
+        function syncTradingViewStateToUrl() {
+            const next = buildTradingViewShareUrl();
+            window.history.replaceState({}, '', next);
+        }
+
+        function ensureScriptLoaded(src, type = 'text/javascript') {
+            return new Promise((resolve, reject) => {
+                if (document.querySelector(`script[src="${src}"]`)) {
+                    resolve();
+                    return;
+                }
+
+                const script = document.createElement('script');
+                script.src = src;
+                script.async = true;
+                script.type = type;
+                script.onload = () => resolve();
+                script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+                document.body.appendChild(script);
+            });
+        }
+
+        async function renderSelectedTradingViewWidget() {
+            const select = document.getElementById('tradingview-widget-select');
+            const symbolInput = document.getElementById('tradingview-symbol-input');
+            const size = document.getElementById('tradingview-size-select')?.value || 'medium';
+            const selectedKey = select?.value || 'advanced-chart';
+            const symbol = symbolInput?.value?.trim();
+            const query = new URLSearchParams({ widget: selectedKey });
+
+            if (symbol) {
+                query.set('symbol', symbol);
+            }
+
+            query.set('size', size);
+
+            const embedResponse = await fetch(`/api/widget/tradingview/embed?${query.toString()}`);
+            const embedPayload = await embedResponse.json();
+
+            if (!embedPayload.success || !embedPayload.data) {
+                throw new Error(embedPayload.error || 'Unable to load TradingView embed metadata');
+            }
+
+            const data = embedPayload.data;
+            const preview = document.getElementById('tradingview-live-preview');
+            preview.innerHTML = '';
+
+            if (data.format === 'iframe') {
+                const container = document.createElement('div');
+                container.className = 'tradingview-widget-container';
+                container.style.height = '100%';
+                container.style.width = '100%';
+
+                const widget = document.createElement('div');
+                widget.className = 'tradingview-widget-container__widget';
+                widget.style.height = 'calc(100% - 32px)';
+                widget.style.width = '100%';
+                container.appendChild(widget);
+
+                const script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.src = data.scriptUrl;
+                script.async = true;
+                script.text = JSON.stringify(data.config || {}, null, 2);
+                container.appendChild(script);
+
+                preview.appendChild(container);
+            } else if (data.format === 'web-component') {
+                await ensureScriptLoaded(data.scriptUrl, 'module');
+                const element = document.createElement(data.elementTag);
+                const attrs = { ...(data.attributes || {}) };
+
+                if (symbol) {
+                    attrs.symbol = symbol;
+                }
+
+                Object.entries(attrs).forEach(([key, value]) => {
+                    element.setAttribute(key, String(value));
+                });
+
+                preview.appendChild(element);
+            }
+
+            document.getElementById('tradingview-widget-format').textContent = data.format;
+            document.getElementById('tradingview-widget-category').textContent = data.category;
+            const docsLink = document.getElementById('tradingview-docs-link');
+            docsLink.href = data.docsUrl;
+
+            const codeBlock = document.getElementById('tradingview-code');
+            codeBlock.textContent = data.embedCode;
+            Prism.highlightElement(codeBlock);
+
+            syncTradingViewStateToUrl();
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Highlight code blocks
+        Prism.highlightAll();
+
+        // Initialize dynamic TradingView demo
+        initTradingViewDemo();
+    </script>
+</body>
+</html>

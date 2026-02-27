@@ -112,6 +112,293 @@ GET /widget/ableton-live-12-suite
 }
 ```
 
+#### Get Analysis Widget
+```http
+GET /widget/analysis
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "widget": {
+    "type": "card",
+    "key": "analysis-widget",
+    "children": [...]
+  },
+  "meta": {
+    "product": "Analysis",
+    "timestamp": "2025-10-20T12:00:00Z"
+  }
+}
+```
+
+#### Get TradingView Integration Guide Widget
+```http
+GET /widget/tradingview/guide
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "widget": {
+    "type": "card",
+    "key": "tradingview-integration-guide",
+    "children": [...]
+  },
+  "meta": {
+    "provider": "TradingView",
+    "timestamp": "2026-02-26T12:00:00Z"
+  }
+}
+```
+
+#### Get TradingView Widget Catalog
+```http
+GET /widget/tradingview/catalog
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "widget": {
+    "type": "card",
+    "key": "tradingview-widget-catalog",
+    "children": [...]
+  },
+  "data": [
+    {
+      "key": "advanced-chart",
+      "name": "Advanced Real-Time Chart",
+      "category": "Charts",
+      "format": "iframe",
+      "docsUrl": "https://www.tradingview.com/widget-docs/widgets/charts/advanced-chart/"
+    }
+  ],
+  "meta": {
+    "provider": "TradingView",
+    "total": 20,
+    "timestamp": "2026-02-26T12:00:00Z"
+  }
+}
+```
+
+#### Get TradingView Embed Widget
+```http
+GET /widget/tradingview?widget=advanced-chart&symbol=NASDAQ:AAPL
+```
+
+**Query Parameters:**
+- `widget` (optional) - TradingView widget key (default: `advanced-chart`)
+- `symbol` (optional) - Symbol override for symbol-based widgets (example: `NASDAQ:AAPL`)
+
+**Response:**
+```json
+{
+  "success": true,
+  "widget": {
+    "type": "card",
+    "key": "tradingview-advanced-chart",
+    "children": [
+      {
+        "type": "markdown",
+        "value": "```html ... TradingView embed code ... ```"
+      }
+    ]
+  },
+  "meta": {
+    "provider": "TradingView",
+    "widget": "advanced-chart",
+    "category": "Charts",
+    "format": "iframe",
+    "symbol": "NASDAQ:AAPL",
+    "timestamp": "2026-02-26T12:00:00Z"
+  }
+}
+```
+
+#### Get TradingView Raw Embed Metadata
+```http
+GET /widget/tradingview/embed?widget=advanced-chart&symbol=NASDAQ:AAPL
+```
+
+Use this endpoint when rendering TradingView widgets directly on a webpage (outside ChatKit JSON rendering).
+
+**Query Parameters:**
+- `widget` (optional) - TradingView widget key (default: `advanced-chart`)
+- `symbol` (optional) - Symbol override for symbol-based widgets (example: `NASDAQ:AAPL`)
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "key": "advanced-chart",
+    "name": "Advanced Real-Time Chart",
+    "category": "Charts",
+    "format": "iframe",
+    "docsUrl": "https://www.tradingview.com/widget-docs/widgets/charts/advanced-chart/",
+    "scriptUrl": "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js",
+    "elementTag": null,
+    "attributes": null,
+    "config": {
+      "symbol": "NASDAQ:AAPL",
+      "interval": "D",
+      "theme": "dark",
+      "locale": "en",
+      "autosize": true
+    },
+    "embedCode": "<!-- TradingView Widget ... -->"
+  },
+  "meta": {
+    "provider": "TradingView",
+    "symbol": "NASDAQ:AAPL",
+    "timestamp": "2026-02-26T12:00:00Z"
+  }
+}
+```
+
+#### Get Audio Widget
+```http
+GET /widget/audio
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "widget": {
+    "type": "card",
+    "key": "audio-widget",
+    "children": [...]
+  },
+  "meta": {
+    "product": "Audio",
+    "timestamp": "2025-10-20T12:00:00Z"
+  }
+}
+```
+
+**Resilient streaming example:**
+```javascript
+async function loadAudioWidget(updateWidget) {
+  try {
+    const response = await fetch('/api/widget/audio', {
+      headers: { Accept: 'application/json' }
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+
+    const payload = await response.json();
+    const { success, widget, error } = payload || {};
+
+    if (!success || !widget) {
+      throw new Error(error || 'Audio widget payload was invalid');
+    }
+
+    // Initial render, then your audio pipeline can stream updates.
+    updateWidget(widget);
+    return widget;
+  } catch (err) {
+    console.error('Failed to load audio widget:', err);
+
+    updateWidget({
+      type: 'card',
+      key: 'audio-widget-error',
+      size: 'md',
+      theme: 'light',
+      background: '#fef2f2',
+      padding: 'lg',
+      radius: 'lg',
+      children: [
+        {
+          type: 'title',
+          value: 'Unable to load audio widget',
+          size: 'lg',
+          weight: 'bold',
+          color: '#b91c1c'
+        },
+        {
+          type: 'text',
+          value: 'Check connectivity and retry.',
+          size: 'sm',
+          color: '#7f1d1d'
+        }
+      ]
+    });
+
+    return null;
+  }
+}
+```
+
+**Resilient client example:**
+```javascript
+async function loadAnalysisWidget(sterling) {
+  try {
+    const response = await fetch('/api/widget/analysis', {
+      headers: { Accept: 'application/json' }
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+
+    const payload = await response.json();
+    const { success, widget, error } = payload || {};
+
+    if (!success || !widget) {
+      throw new Error(error || 'Analysis widget payload was invalid');
+    }
+
+    sterling.setOptions({
+      widgets: { initial: [widget] }
+    });
+
+    return widget;
+  } catch (err) {
+    console.error('Failed to load analysis widget:', err);
+
+    sterling.setOptions({
+      widgets: {
+        initial: [
+          {
+            type: 'card',
+            key: 'analysis-widget-error',
+            size: 'md',
+            theme: 'light',
+            background: '#fef2f2',
+            padding: 'lg',
+            radius: 'lg',
+            children: [
+              {
+                type: 'title',
+                value: 'Unable to load analysis',
+                size: 'lg',
+                weight: 'bold',
+                color: '#b91c1c'
+              },
+              {
+                type: 'text',
+                value: 'Please try again in a moment.',
+                size: 'sm',
+                color: '#7f1d1d'
+              }
+            ]
+          }
+        ]
+      }
+    });
+
+    return null;
+  }
+}
+```
+
 ### Action Handler
 
 #### Process Widget Action
